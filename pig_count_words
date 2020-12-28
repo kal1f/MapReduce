@@ -1,3 +1,7 @@
-lines = LOAD '/binod_data/input/shakespeare_sonnets.txt' AS(line:chararray);                                                                   newlines = FOREACH lines GENERATE UPPER(REPLACE(TRIM(line),'([^a-zA-Z\\s]+)','')) AS newline;                                                  words = FOREACH newlines GENERATE FLATTEN(TOKENIZE(newline)) as word;                                                                          grouped = GROUP words BY word;                                                                                                                 w_count = FOREACH grouped GENERATE group, COUNT(words); 
+lines = LOAD '/binod_data/input/shakespeare_sonnets.txt' AS(line:chararray);                                                                  
+newlines = FOREACH lines GENERATE UPPER(REPLACE(TRIM(line),'([^a-zA-Z\\s]+)','')) AS newline;                                                 
+words = FOREACH newlines GENERATE FLATTEN(TOKENIZE(newline)) as word;                                                                      
+grouped = GROUP words BY word;                                                                                                              
+w_count = FOREACH grouped GENERATE group, COUNT(words); 
 w_out = ORDER w_count BY group;
 STORE w_out into '/user/raj_ops/pig/out';                                                                                                                                                  
